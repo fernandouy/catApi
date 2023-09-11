@@ -1,12 +1,17 @@
 const containerDiv = document.getElementById("container");
-const searchForm = document.getElementById("searchForm");
 
 async function fetchCatApi() {
-  const apiURL = `https://api.thecatapi.com/v1/images/search?limit=20&has_breeds=1&api_key=live_Fz11k2UhIMH6X9InkxP65wsMyYSDH5LUlR8PwPGOg6SJc33BTHatF5EZVXKqlptq`;
-  const response = await fetch(apiURL);
-  const jsonResponse = await response.json();
-
-  return jsonResponse;
+  showLoadingSpinner();
+  try {
+    const apiURL = `https://api.thecatapi.com/v1/images/search?limit=10&has_breeds=1&api_key=live_Fz11k2UhIMH6X9InkxP65wsMyYSDH5LUlR8PwPGOg6SJc33BTHatF5EZVXKqlptq`;
+    const response = await fetch(apiURL);
+    const jsonResponse = await response.json();
+    hideLoadingSpinner();
+    return jsonResponse;
+  } catch (error) {
+    console.error(error);
+    hideLoadingSpinner();
+  }
 }
 
 function showListOfBreeds(breeds) {
@@ -47,6 +52,17 @@ function showListOfBreeds(breeds) {
       </div>
     `;
   });
+}
+
+function showLoadingSpinner() {
+  document.getElementById("spinnerContainer").classList.remove("d-none");
+  document
+    .getElementById("spinnerContainer")
+    .classList.add("d-flex", "justify-content-center", "mt-5");
+}
+
+function hideLoadingSpinner() {
+  document.getElementById("spinnerContainer").classList.add("d-none");
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
